@@ -14,7 +14,8 @@ int main() {
         
         if(isPrime[i]){
             cnt++;
-            
+           
+           //here we are making all those numbers false which are divisible by current prime number(i)
             for(int j = i*2 ; j <= n ; j += i){
                 isPrime[j] = false;
             }
