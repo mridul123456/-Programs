@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Stack{
+  public : 
+    int *arr;
+    int top;
+    int size;
+    
+    Stack(int size){
+        this -> size = size;
+        arr = new int[size];
+        top = -1;
+    }
+    
+    void pop(){
+        if(top == -1){
+           cout<<"Stack underflow";
+           return;
+        }
+        else{
+            top--;
+        }
+    }
+    
+    void push(int data){
+        if(top < size - 1){
+            top++;
+            arr[top] = data;
+            cout<<"Data inserted/pushed successfully"<<endl;
+        }else{
+            cout<<"Stack overflow"<<endl;
+        }
+    }
+    
+};
+
+int main(){
+    
+    // Here we are showing the implementation of stack using arrays
+    
+}
