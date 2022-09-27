@@ -1,0 +1,83 @@
+//Here logic is very simple 
+//We will create an array of elements which will contain the index of smaller element 
+//left array will contain the index of smaller element which is in left part of array from current index 
+//right array will contain the index of element which is in right part of array from current index
+
+//Now we will run a loop 
+//And in every iteration we will find area and compare it with maxArea
+//Before finding area in every iteration we have to check whether right[i] is not -1, if it is -1 then we have to set its value to n because if there is no element
+//smaller than the current element towards its right it means it can extends towards its extreme right
+//area will be len of current index element and breadth will be right[i] - left[i] - 1
+
+class Solution {
+public:
+    
+    void prevSmallerElement(vector<int>& left, vector<int>& heights){
+        
+        int n = heights.size();
+        stack<int> st;
+        st.push(-1);
+        
+        for(int i = 0 ; i < n ; i++){
+            
+            while(st.top() != -1 && heights[st.top()] >= heights[i]){
+                st.pop();
+            }
+            
+            left[i] = st.top();
+            st.push(i);
+        }
+        
+    }
+    
+    
+    void nextSmallerElement(vector<int>& right, vector<int>& heights){
+        
+        int n = heights.size();
+        stack<int> st;
+        st.push(-1);
+        
+        for(int i = n-1 ; i >= 0 ; i--){
+            
+            while(st.top() != -1 && heights[st.top()] >= heights[i]){
+                st.pop();
+            }
+            
+            right[i] = st.top();
+            st.push(i);
+        }
+        
+    }
+    
+    
+    int largestRectangleArea(vector<int>& heights) {
+        
+        int n = heights.size();
+        
+        vector<int> left(n) ;
+        prevSmallerElement(left, heights);
+        
+        vector<int> right(n);
+        nextSmallerElement(right, heights);
+        
+        int maxArea = INT_MIN, area = 0;
+        
+        for(int i = 0 ; i < n ; i++){
+            
+            int len = heights[i];
+            
+            if(right[i] == -1) right[i] = n;
+            int breadth = right[i] - left[i] - 1;
+            
+            area = len * breadth;
+            
+            maxArea = max(area, maxArea);
+            
+        }
+        
+        return maxArea;
+        
+        
+    }
+};
+ 
