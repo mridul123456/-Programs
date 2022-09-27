@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool isValid(string& s){
+    
+    int n = s.size();
+    stack<char> st;
+    
+    for(int i = 0 ; i < n ; i++){
+        char c = s[i];
+        if(c == '(' || c == '{' || c == '[') st.push(c);
+        else{
+            if(st.empty()) return false;
+            else if(c == ']' && st.top() == '[') st.pop();
+            else if(c == '}' && st.top() == '{') st.pop();
+            else if(c == ')' && st.top() == '(') st.pop();
+            else return false;
+        }
+    }
+    return true;
+}
+
+
+int main(){
+
+    string s ;
+    cin >> s;
+    
+    bool ans = isValid(s);
+    
+    if(ans) cout<<"Given String "<<s<<" is valid";
+    else cout<<"Given String "<<s<<" is not valid";
+    
+    return 0;
+}
