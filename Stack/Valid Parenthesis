@@ -17,7 +17,8 @@ bool isValid(string& s){
             else return false;
         }
     }
-    return true;
+    if(st.empty()) return true;
+    return false;
 }
 
 
