@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void display(stack<int>& s){
+    
+    if(s.empty()) return;
+    
+    cout<<s.top()<<" ";
+    
+    int ele = s.top();
+    s.pop();
+    
+    display(s);
+    
+    s.push(ele);
+}
+
+void solve(stack<int>& s, int element){
+    
+    if(s.empty()) {
+         s.push(element);
+         return;
+    }
+    
+    int ele = s.top();
+    s.pop();
+    
+    solve(s, element);
+    
+    s.push(ele);
+}
+
+int main(){
+    
+    stack<int> st;
+    
+    cout<<"Enter no of elements : ";
+    int n;
+    cin >> n;
+    cout<<endl;
+    
+    cout<<"Enter elements : ";
+    for(int i = 0 ; i < n ; i++){
+        int x;
+        cin>>x;
+        st.push(x);
+    }cout<<endl;
+    
+    
+    cout<<"Elements in Stack are before inserting element : "<<endl;
+    display(st);
+    cout<<endl;
+    
+    cout<<"Enter the element you want to insert at the bottom of stack : ";
+    int ele;
+    cin>>ele;
+    cout<<endl;
+    
+    
+    solve(st, ele);
+    
+    cout<<"Elements in Stack after inserting at bottom are : "<<endl;
+    display(st);
+    cout<<endl;
+    
+    
+    return 0;
+}
+
+
+O/P : 
+
+Enter no of elements : 5
+Enter elements : 5 4 3 2 1
+Elements in Stack are before inserting element : 
+1 2 3 4 5 
+Enter the element you want to insert at the bottom of stack : 0
+Elements in Stack after inserting at bottom are : 
+1 2 3 4 5 0 
+
