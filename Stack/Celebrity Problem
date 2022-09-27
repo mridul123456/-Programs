@@ -1,0 +1,53 @@
+class Solution 
+{
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        stack<int> st;
+        
+        //Pushing all the person to the stack
+        for(int i = 0 ; i < n ; i++){
+            st.push(i);
+        }
+        
+        //Here we will be popping two persons and checking if any one of the two knows other
+        //then definitely he is not the celeb
+        while(st.size() != 1){
+            
+            //Popping first person
+            int a = st.top();
+            st.pop();
+            
+            //Popping second person
+            int b = st.top();
+            st.pop();
+            
+            //If 'a' knows 'b' means 'a' is not celeb so pushing back 'b' as 'b' can be celeb
+            if(M[a][b] == 1) st.push(b);
+            //If 'b' knows 'a' means 'a' is not celeb so pushing back 'a' as 'a' can be celeb
+            else st.push(a);
+            
+        }
+        
+        //Popping the last candidate that can be a celeb
+        int celeb = st.top();
+        
+        
+        //Checking in column
+        //If any one doesnot know the candidate then it means it is not a celeb
+        for(int i = 0 ; i < n ; i++){
+            if(M[i][celeb] == 0 && i != celeb) return -1;
+        }
+        
+        
+        //checking in row if any element in row is 1 
+        //it means that it is not celeb because celeb don't know anyone
+        for(int i = 0 ; i < n ; i++){
+            if(M[celeb][i] == 1) return -1;
+        }
+        
+        //Finally if candidate passes all the above condition then it is a celebrity
+        return celeb;
+    }
+};
