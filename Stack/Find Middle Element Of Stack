@@ -24,7 +24,7 @@ int main(){
         int x;
         cin>>x;
         st.push(x);
-    }5
+    }
     
     int index = n - 1;
     int cnt = solve(st, n, index);
