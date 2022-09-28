@@ -40,6 +40,9 @@ class Queue{
           int x = arr[qfront];
           arr[qfront] = -1;
           qfront++;
+          
+          //When queue becomes empty
+          if(qfront == qrear) qfront = qrear = 0;
           return x;
           
       }
