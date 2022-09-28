@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void display(queue<int> q){
+
+    while(!q.empty()){
+        cout<<q.front()<<" ";
+        q.pop();
+    }cout<<endl;        
+    
+}
+
+void solve(queue<int>& q){
+    
+    if(q.empty()) return;
+    
+    int ele = q.front();
+    q.pop();
+    
+    solve(q);
+    
+    q.push(ele);
+}
+
+
+int main() {
+   
+   queue<int> q;
+   
+   q.push(1);
+   q.push(2);
+   q.push(3);
+   q.push(4);
+   
+   cout<<"Queue before reversing : ";
+   display(q);
+   
+   solve(q);
+   
+   cout<<"Queue after reversing : ";
+   display(q);
+   
+}
+
+
+O/P :
+Queue before reversing : 1 2 3 4 
+Queue after reversing : 4 3 2 1 
