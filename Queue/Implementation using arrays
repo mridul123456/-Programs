@@ -1,0 +1,67 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Queue{
+  
+  int size;
+  int qfront, qrear;
+  int *arr;
+  
+  public :  
+  Queue(){
+   
+    size = 10001;
+    arr = new int[size];
+    qfront = qrear = 0;
+      
+  }
+  
+   void enqueue(int data){
+       
+       if(qrear == size){
+           cout<<"Queue is full\n";
+           return ;
+       }
+       else{
+           arr[qrear] = data;
+           qrear++;
+       }
+       
+   }
+   
+   int dequeue(){
+      
+      if(qfront == qrear){
+          cout<<"Queue is empty";
+          return INT_MAX;
+      }
+      else{
+          
+          int x = arr[qfront];
+          arr[qfront] = -1;
+          qfront++;
+          return x;
+          
+      }
+       
+   }
+ 
+    
+};
+
+int main() {
+    
+    Queue q;
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.enqueue(4);
+    
+    int d1 = q.dequeue();
+    int d2 = q.dequeue();
+    
+    if(d1 != INT_MAX) cout<<d1<<" ";
+    if(d2 != INT_MAX) cout<<d2;
+    
+    return 0;
+}
