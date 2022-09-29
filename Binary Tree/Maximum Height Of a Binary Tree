@@ -1,0 +1,20 @@
+class Solution{
+    public:
+    
+    int solve(Node* root){
+        
+        if(root == NULL) return 0;
+        
+        int left = solve(root -> left) + 1;
+        int right = solve(root -> right) + 1;
+        
+        return max(left, right);
+        
+    }
+    
+    //Function to find the height of a binary tree.
+    int height(struct Node* node){
+       int ans = solve(node);
+       return ans;
+    }
+};
