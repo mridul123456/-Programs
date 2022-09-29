@@ -1,0 +1,27 @@
+class Solution {
+public:
+    pair<int, bool> solve(TreeNode* root){
+      
+        if(root == NULL) return {0, true};
+        
+        auto left = solve(root -> left);
+        auto right = solve(root -> right);
+        
+        pair<int, bool> ans;
+        
+        ans.first = max(left.first, right.first) + 1;
+        
+        int diff = abs(left.first - right.first);
+        
+        if(diff <= 1 && left.second && right.second)
+        ans.second = true;
+        else ans.second = false;
+        
+        return ans;
+    }
+    
+    bool isBalanced(TreeNode* root) {
+        pair<int, bool> temp = solve(root);
+        return temp.second;
+    }
+};
