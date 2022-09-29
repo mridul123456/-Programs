@@ -1,0 +1,160 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct node{
+  
+  int data;
+  node* left, * right;
+  
+  node(int data){
+      this -> data = data;
+      left = NULL;
+      right = NULL;
+  }
+    
+};
+
+node* createTree(node* root){
+    
+    int data;
+    cout << "Enter data : ";
+    cin >> data;
+    root = new node(data);
+    
+    if(data == -1) return NULL;
+    
+    cout<<"\nEnter data for left child : \n";
+    root -> left = createTree(root -> left);
+    cout<<"\nEnter data for right child : \n";
+    root -> right = createTree(root -> right);
+    
+    return root;
+    
+}
+
+void createTreeUsingLOT(node*& root){
+    
+    queue<node*> q;
+    int data;
+    cout<<"Enter root data : ";
+    cin>>data;
+    root = new node(data);
+    q.push(root);
+    
+    while(!q.empty()){
+        
+        node* temp = q.front();
+        q.pop();
+        
+        cout<<"\nEnter data for left child : ";
+        int leftData;
+        cin>>leftData;
+        
+        if(leftData != -1){
+            temp -> left = new node(leftData);
+            q.push(temp -> left);
+        }
+        
+        cout<<"\nEnter data for right child : ";
+        int rightData;
+        cin>>rightData;
+        
+        if(rightData != -1){
+            temp -> right = new node(rightData);
+            q.push(temp -> right);
+        }
+    }
+}
+
+void levelOrderTraversal(node* root){
+    
+    queue<node*> q;
+    q.push(root);
+    
+    while(!q.empty()){
+        
+        node* temp = q.front();
+        q.pop();
+        
+        cout<<temp -> data<< " ";
+        
+        if(temp -> left) q.push(temp -> left);
+        if(temp -> right) q.push(temp -> right);
+        
+    }
+    
+    
+}
+
+void displayIn(node* root){
+    
+    if(root == NULL) return;
+    
+    displayIn(root -> left);
+    cout<< root -> data <<" ";
+    displayIn(root -> right);
+    
+}
+
+
+void displayPre(node* root){
+    
+    if(root == NULL) return;
+    
+    cout<< root -> data <<" ";
+    displayPre(root -> left);
+    displayPre(root -> right);
+    
+}
+
+
+void displayPost(node* root){
+    
+    if(root == NULL) return;
+    
+    displayPost(root -> left);
+    displayPost(root -> right);
+    cout<< root -> data <<" ";
+    
+}
+
+int main() {
+    
+    node* root = NULL;
+    
+    // root = createTree(root);
+    createTreeUsingLOT(root);
+    
+    cout<<"Inorder Traversal : ";
+    displayIn(root);
+    cout<<endl;
+    
+    cout<<"Preorder Traversal : ";
+    displayPre(root);
+    cout<<endl;
+    
+    cout<<"Postorder Traversal : ";
+    displayPost(root);
+    cout<<endl;
+    
+    cout<<"Level Order Traversal : ";
+    levelOrderTraversal(root);
+    cout<<endl;
+    
+    
+    
+}
+
+
+O/P : 
+Enter root data : 1
+Enter data for left child : 2
+Enter data for right child : 3
+Enter data for left child : -1
+Enter data for right child : -1
+Enter data for left child : -1
+Enter data for right child : -1
+Inorder Traversal : 2 1 3 
+Preorder Traversal : 1 2 3 
+Postorder Traversal : 2 3 1 
+Level Order Traversal : 1 2 3 
