@@ -1,0 +1,73 @@
+//Brute Force :
+
+class Solution {
+  
+  int maxHeight(Node* root){
+      if(root == NULL ){
+          return 0;
+      }
+      
+      int left = maxHeight(root->left);
+      int right = maxHeight(root->right);
+      
+      int ans = max(left, right) + 1;
+      
+      return ans;
+  }    
+    
+  public:
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+       if(root == NULL){
+           return 0;
+       }
+       
+       int opt1 = diameter(root->left);
+       int opt2 = diameter(root->right);
+       int opt3 = maxHeight(root->left) + maxHeight(root->right) + 1;
+       
+       int ans = max({opt1, opt2, opt3}) ;
+       
+       return ans;
+       
+    }
+};
+
+Optimized Solution :
+
+class Solution {
+  public:
+    
+    // pair.first contains diameter
+    // pair.second contains height
+    pair<int, int> solve(Node* root){
+        
+        if(root == NULL) return {0, 0};
+        
+        auto left = solve(root -> left);
+        auto right = solve(root -> right);
+        
+        pair<int, int> ans;
+        
+        //Max Diameter can be present in left subtree
+        int op1 = left.first;
+        
+        //Max Diameter can be present in right subtree
+        int op2 = right.first;
+        
+        //Max Diamter can be present in both subtree including root
+        int op3 = left.second + right.second + 1;
+        
+        ans.first = max({op1, op2, op3});
+        ans.second = max(left.second, right.second) + 1;
+        
+        return ans;
+    }
+    
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+        auto temp = solve(root);
+        
+        return temp.first;
+    }
+};
