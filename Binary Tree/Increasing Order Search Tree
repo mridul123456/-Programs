@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void solve(TreeNode* root, TreeNode*& ans){
+      
+        if(root == NULL) return ;
+        
+        solve(root -> left, ans);
+        
+        ans -> right = new TreeNode(root -> val);
+        ans = ans -> right;
+        
+        solve(root -> right, ans);
+    }
+    
+    TreeNode* increasingBST(TreeNode* root) {
+        
+        if(root == NULL) return root;
+        
+        TreeNode* ans = new TreeNode();
+        
+        TreeNode* temp = ans;
+        
+        solve(root, ans);
+        
+        return temp -> right;
+        
+        
+    }
+};
