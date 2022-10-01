@@ -1,0 +1,56 @@
+Question : Given 2 Arrays of Inorder and preorder traversal. Construct a tree and print the Postorder traversal. 
+
+
+Algo : 
+element = pre[index]
+create a new node with input as element
+find the position of element in inorder
+root -> left = Recursively call the function with inorderStart to pos - 1
+root -> right = Recursively call the function with pos + 1 to inorderEnd 
+return root
+
+Input:
+N = 4
+inorder[] = {1 6 8 7}
+preorder[] = {1 6 7 8}
+Output: 8 7 6 1
+
+class Solution{
+    public:
+    
+    int findPos(int in[], int element, int n){
+     
+        for(int i = 0 ; i < n ; i++){
+            if(in[i] == element) return i;
+        }
+        return -1;
+    }
+    
+    Node* solve(int in[], int pre[], int inorderStart, int inorderEnd, int& index, int n){
+        
+        if(inorderStart > inorderEnd || index >= n){
+            return NULL;
+        }
+        
+        int element = pre[index++];
+        Node* root = new Node(element);
+        int pos = findPos(in, element, n);
+        
+        root -> left = solve(in, pre, inorderStart, pos - 1, index, n);
+        root -> right = solve(in, pre, pos + 1, inorderEnd, index, n);
+        
+        return root;
+        
+    }
+    
+    Node* buildTree(int in[],int pre[], int n)
+    {
+        int inorderStart = 0;
+        int inorderEnd = n - 1;
+        int preorderStart = 0;
+        
+        Node* ans = solve(in, pre, inorderStart, inorderEnd, preorderStart, n);
+        
+        return ans;
+    }
+};
