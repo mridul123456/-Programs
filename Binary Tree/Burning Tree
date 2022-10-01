@@ -1,0 +1,104 @@
+Given a binary tree and a node called target. Find the minimum time 
+required to burn the complete binary tree if the target is set on fire. 
+It is known that in 1 second all nodes connected to a given node get 
+burned. That is its left child, right child, and parent.
+
+Output: 7
+Explanation: If leaf with the value 
+8 is set on fire. 
+After 1 sec: 5 is set on fire.
+After 2 sec: 2, 7 are set to fire.
+After 3 sec: 4, 1 are set to fire.
+After 4 sec: 3 is set to fire.
+After 5 sec: 6 is set to fire.
+After 6 sec: 9 is set to fire.
+After 7 sec: 10 is set to fire.
+It takes 7s to burn the complete tree.
+
+
+class Solution {
+  public:
+    Node* createMapping(Node* root, map<Node*, Node*>& mapping, int t){
+        
+        queue<Node*> q;
+        q.push(root);
+        Node* target = NULL;
+        
+        while(!q.empty()){
+            
+            Node* front = q.front();
+            q.pop();
+            
+            if(front -> data == t){
+                target = front;
+            }
+            
+            if(front -> left){
+                q.push(front -> left);
+                mapping[front->left] = front;
+            }
+            if(front -> right){
+                q.push(front -> right);
+                mapping[front -> right] = front;
+            }
+        }
+        
+        return target;
+    }
+    
+    int solve(Node* target, map<Node*, Node*> mapping){
+        
+        int cnt = 0;
+        
+        queue<Node*> q;
+        q.push(target);
+        
+        map<Node*, bool> visited;
+        visited[target] = true;
+        
+        while(!q.empty()){
+          
+            int flag = 0;
+            int size = q.size();
+            
+            for(int i = 0 ; i < size ; i++){
+             Node* front = q.front();
+             q.pop();
+            
+            if(front -> left != NULL && !visited[front -> left]){
+                q.push(front -> left);
+                visited[front -> left] = true;
+                flag = 1;
+            }
+            
+            if(front -> right != NULL && !visited[front -> right]){
+                q.push(front -> right);
+                visited[front -> right] = true;
+                flag = 1;
+            }
+            
+            if(mapping[front] != NULL && !visited[mapping[front]]){
+                q.push(mapping[front]);
+                visited[mapping[front]] = true;
+                flag = 1;
+            }
+            
+           }
+            
+            if(flag == 1) cnt++;
+            
+        }
+        
+        return cnt;
+    }
+    
+  
+    int minTime(Node* root, int target) 
+    {
+        map<Node*, Node*> mapping;
+        Node* t = createMapping(root, mapping, target);
+        
+        return solve(t, mapping);
+        
+    }
+};
