@@ -1,0 +1,41 @@
+//Recursive Approach
+
+bool solve(Node* root, int x){
+    
+    if(root == NULL) return false;
+    
+    if(root -> data == x) return true;
+    
+    bool left = false, right = false;
+    if(root -> data >= x){
+        left = solve(root -> left, x);
+    }else{
+        right = solve(root -> right, x);
+    }
+    
+    return left || right;
+    
+}
+
+// Function to search a node in BST.
+bool search(Node* root, int x) {
+    return solve(root, x);
+}
+
+
+//Iterative Approach
+bool search(Node* root, int x) {
+
+    Node* curr = root;
+    
+    while(curr != NULL){
+        
+        if(curr -> data == x) return true;
+        
+        if(curr -> data > x) curr = curr -> left;
+        else curr = curr -> right;
+        
+    }
+    
+    return false;
+}
