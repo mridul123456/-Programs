@@ -1,0 +1,39 @@
+class Solution {
+public:
+    void solve(vector<string>& ans, string& output, int currOpen, int currClose, int remOpen, int remClose, int n){
+        
+        if(remClose == 0 && remOpen == 0){
+            ans.push_back(output);
+            return;
+        }
+        
+        if(remOpen > 0){
+            output.push_back('(');
+            solve(ans, output, currOpen + 1, currClose, remOpen - 1, remClose, n);
+            output.pop_back();
+        }
+        
+        if(remClose > 0 && currOpen > currClose){
+            output.push_back(')');
+            solve(ans, output, currOpen, currClose + 1, remOpen, remClose - 1, n);
+            output.pop_back();
+        }
+        
+    }
+    
+    vector<string> generateParenthesis(int n) {
+        
+        string output = "";
+        vector<string> ans;
+        
+        int currOpen = 0;
+        int currClose = 0;
+        int remClose = n ;
+        int remOpen = n;
+        
+        solve(ans, output, currOpen, currClose, remOpen, remClose, n);
+        
+        return ans;
+        
+    }
+};
