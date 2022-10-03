@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void solve(TreeNode* root, int k, int& index, int& ans){
+        
+        if(root == NULL) return;
+        
+        solve(root -> left, k, index, ans);
+        index++;
+        if(index == k){
+            ans = root -> val;
+            return;
+        }
+        solve(root -> right, k, index, ans);
+        
+    }
+    
+    int kthSmallest(TreeNode* root, int k) {
+        int index = 0;
+        int ans = 0;
+        
+        solve(root, k, index, ans);
+        
+        return ans;
+    }
+};
