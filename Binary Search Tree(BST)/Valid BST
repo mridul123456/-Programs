@@ -1,3 +1,7 @@
+//BRUTE FORCE : we can find the inorder traversal and check if it is sorted then it is valid bst else it is not
+
+//Efficient Approach
+
 class Solution {
 public:
     bool solve(TreeNode* root, long long int lower, long long int upper){
