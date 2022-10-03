@@ -1,0 +1,35 @@
+ 
+//INORDER PREDECESSOR    
+    node* pred = NULL;
+    
+    while(root != NULL){
+        
+        if(root -> val >= p -> val){
+            root = root -> left;
+        }else{
+            pred = root;
+            //To check a value  which is greater than curr pred and
+            //less than p->val
+            root = root -> right;
+        }
+    }
+    
+//INORDER SUCCESSOR
+
+ node* succ = NULL;
+    
+    while(root != NULL){
+        if(root -> val <= p-> val){
+            root = root -> right;
+        }else{
+            succ = root;
+            //To check a value which is less than curr succ and 
+            //greater than p->val
+            root = root -> left;
+        }
+    }
+    
+    
+    //TC : O(H)
+    //SC = O(1)
+    
