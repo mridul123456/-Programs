@@ -1,0 +1,44 @@
+class Solution {
+public:
+    TreeNode* solve(TreeNode* root, TreeNode* p, TreeNode* q){
+        
+        if(root == NULL) return NULL;
+        
+        if(root == p || root == q){
+            return root;
+        }
+        
+        TreeNode* left = solve(root -> left, p, q);
+        TreeNode* right = solve(root -> right, p, q);
+        
+        if(left && right) return root;
+        else if(left && right == NULL) return left;
+        else if(left == NULL && right) return right;
+        return NULL;
+        
+    }
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        // return solve(root, p, q);
+        
+        TreeNode* temp = root;
+        
+        while(temp != NULL){
+            
+            //When both the data in p and q are smaller than current node
+            if(temp -> val > p -> val && temp -> val > q -> val){
+                temp = temp -> left;
+            }
+            
+            //When both the data in p and q are greater than current node
+            else if(temp -> val < p -> val && temp -> val < q -> val){
+                temp = temp -> right;
+            }
+            
+            else return temp;
+        }
+        
+        return temp;
+    }
+};
