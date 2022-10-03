@@ -1,0 +1,73 @@
+class Solution {
+public:
+    TreeNode* findMin(TreeNode* root){
+        
+        while(root -> left != NULL){
+            root = root -> left;
+        }
+        return root;
+        
+    }
+    
+    TreeNode* deleteFromBST(TreeNode* root, int key){
+        
+        if(root == NULL) return root;
+        
+        if(root -> val == key){
+            
+            //0 child
+            if(root -> left == NULL && root -> right == NULL){
+                delete root;
+                return NULL;
+            }
+            
+            //1 child
+            
+            //Left Child
+            if(root -> left != NULL && root -> right == NULL){
+                TreeNode* temp = root -> left;
+                delete root;
+                return temp;
+            
+            }
+            
+            //right Child
+            if(root -> left == NULL && root -> right != NULL){
+                TreeNode* temp = root -> right;
+                delete root;
+                return temp;
+            
+            }
+            
+            //2 child
+            
+            if(root -> left != NULL && root -> right != NULL){
+                
+                //Finding inorder successor(Can also be done using inorder predecessor)
+                int mini = findMin(root -> right) -> val;
+                
+                //Replacing root that needs to be deleted with mini
+                root -> val = mini;
+                
+                //Deleting the mini val from right subtree
+                root -> right = deleteFromBST(root -> right, mini);
+                
+                return root;
+            }
+        }
+        else if(root -> val > key){
+           root -> left = deleteFromBST(root -> left, key);
+        }
+        else{
+            root -> right = deleteFromBST(root -> right, key);
+        }
+        
+        return root;
+    }
+    
+    TreeNode* deleteNode(TreeNode* root, int key) {
+        
+        return deleteFromBST(root, key);
+        
+    }
+};
