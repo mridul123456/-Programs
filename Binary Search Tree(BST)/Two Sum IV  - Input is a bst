@@ -1,0 +1,38 @@
+
+class Solution {
+public:
+    void solve(TreeNode* root, int k, vector<int>& inorder){
+        
+        if(root == NULL) return;
+        
+        solve(root->left, k, inorder);
+        inorder.push_back(root->val);
+        solve(root->right, k, inorder);
+        
+    }
+    bool findTarget(TreeNode* root, int k) {
+        
+        vector<int> inorder;
+        
+        solve(root, k, inorder);
+        
+        int i = 0;
+        int j = inorder.size()-1;
+        
+        int sum = 0;
+        
+        while(i < j){
+            sum = inorder[i] + inorder[j];    
+            
+            if(sum == k) return true;
+            
+            if(sum > k) j--;
+            
+            else if(sum < k) i++;
+            
+        }
+        
+        return false;
+        
+    }
+};
