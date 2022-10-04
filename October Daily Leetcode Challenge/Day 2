@@ -1,4 +1,4 @@
-Number Of Dice Rolls With target Sum
+Q.Number Of Dice Rolls With target Sum
 
 You have n dice and each die has k faces numbered from 1 to k.
 Given three integers n, k, and target, return the number of possible
