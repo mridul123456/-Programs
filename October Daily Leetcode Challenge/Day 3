@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        
+        map<int, int> mapping;
+        
+        for(int i = 0 ; i < colors.size() - 1 ; i++){
+            
+            if(colors[i] == colors[i + 1]){
+                mapping[i] = i + 1;
+                int temp = i;
+                i++;
+                while(i < colors.size() && colors[i] == colors[temp]){
+                    mapping[temp] = i;
+                    i++;
+                }
+                i--;
+            }
+            
+        }
+        
+        int remove = 0;
+        
+        for(auto it : mapping){
+            int maxi = INT_MIN;
+            int temp = 0;
+            for(int i = it.first ; i <= it.second ; i++){
+                maxi = max(neededTime[i], maxi);
+                temp += neededTime[i];
+            }
+            
+            remove += temp - maxi;
+        }  
+        
+       return remove; 
+    }
+};
