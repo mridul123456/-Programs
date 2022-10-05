@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    map<int, list<int>> adj;
+    
+    void addEdge(int u, int v){
+        
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        
+    }
+    
+    void print(){
+        
+        for(auto i : adj){
+            cout<<i.first<<" -> ";
+            for(auto j : i.second){
+                cout<<j<<", ";
+            }cout<<endl;
+        }
+    }
+    
+};
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v;
+        cin>>u>>v;
+        g.addEdge(u, v);
+    }
+    
+    g.print();
+    
+    return 0;
+}
+
+
+
+Enter the number of vertices/nodes : 3
+Enter the number of edges : 3
+Enter edges : 
+1 2 
+2 3
+3 1
+1 -> 2, 3, 
+2 -> 1, 3, 
+3 -> 2, 1, 
