@@ -1,0 +1,32 @@
+  
+    
+    cout<<"\n\nTopological Sorting using BFS(Kahn's Algorithm : ";
+    vector<int> indegree(n);
+    
+    for(auto i : g.adj){
+       for(auto j : i.second){
+           indegree[j]++;
+       } 
+    }
+    
+    //Kahn's Algorithm
+    queue<int> q;
+    
+    for(int i = 0 ; i < n ; i++){
+        if(indegree[i] == 0) q.push(i);
+    }
+    
+    while(!q.empty()){
+        int front = q.front();
+        q.pop();
+        
+        cout<<front<<" ";
+        
+        for(auto i : g.adj[front]){
+           indegree[i]--;
+           
+           if(indegree[i] == 0){
+               q.push(i);
+           }
+        }
+    }
