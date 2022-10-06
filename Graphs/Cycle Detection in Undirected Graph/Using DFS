@@ -1,0 +1,28 @@
+bool detectCycleBFS(int source, map<int, list<int>>& adj){
+    
+    map<int, bool> visited;
+    map<int, int> parent;
+    
+    queue<int> q;
+    
+    q.push(source);
+    visited[source] = true;
+    
+    while(!q.empty()){
+        
+        int front = q.front();
+        q.pop();
+        
+        for(auto i : adj[front]){
+            if(visited[i] && parent[i] != front) return true;
+            if(!visited[i]){
+                q.push(i);
+                visited[i] = true;
+                parent[i] = front;
+            }
+        }
+    }
+    
+    return false;
+    
+}
