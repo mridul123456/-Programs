@@ -1,0 +1,19 @@
+void topologicalSort(int node, map<int, list<int>>& adj, 
+                       map<int, bool>& visited, stack<int>& topo){
+
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i])
+       topologicalSort(i, adj, visited, topo); 
+    }
+    
+    topo.push(node);
+}
+
+void displayTopo(stack<int> st){
+    while(!st.empty()){
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+}
