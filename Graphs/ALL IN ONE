@@ -1,0 +1,242 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    map<int, list<int>> adj;
+    
+    void addEdge(int u, int v){
+        
+        adj[u].push_back(v);
+        // adj[v].push_back(u);
+        
+    }
+    
+    void print(){
+        
+        for(auto i : adj){
+            cout<<i.first<<" -> ";
+            for(auto j : i.second){
+                cout<<j<<", ";
+            }cout<<endl;
+        }
+    }
+    
+};
+
+void bfs(int source, map<int, list<int>>& adj){
+    
+    map<int, bool> visited;
+    queue<int> q;
+    
+    q.push(source);
+    visited[source] = true;
+    
+    while(!q.empty()){
+        
+        int front = q.front();
+        q.pop();
+        
+        cout<<front<<" ";
+        
+        for(auto i : adj[front]){
+              while(!visited[i]){
+                  q.push(i);
+                  visited[i] = true;
+              }
+        }
+        
+    }
+    
+}
+
+void dfs(int node, map<int, list<int>>& adj, map<int, bool>& visited){
+    
+    cout<<node<<" ";
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i]){
+            dfs(i, adj, visited);
+        }
+    }
+    
+}
+
+bool detectCycleBFS(int source, map<int, list<int>>& adj){
+    
+    map<int, bool> visited;
+    map<int, int> parent;
+    
+    queue<int> q;
+    
+    q.push(source);
+    visited[source] = true;
+    
+    while(!q.empty()){
+        
+        int front = q.front();
+        q.pop();
+        
+        for(auto i : adj[front]){
+            if(visited[i] && parent[i] != front) return true;
+            if(!visited[i]){
+                q.push(i);
+                visited[i] = true;
+                parent[i] = front;
+            }
+        }
+    }
+    
+    return false;
+    
+}
+
+bool detectCycleDFS(int node, int parent, map<int, list<int> >& adj, 
+                     map<int, bool>& visited){
+
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i]){
+            bool ans = detectCycleDFS(i, node, adj, visited);
+            if(ans) return true;
+        }
+        else if(visited[i] && i != parent) return true;
+    }
+                         
+    return false;                     
+}
+
+bool checkCycleDFS(int node, map<int, list<int>>& adj, 
+                    map<int, bool>& visited, map<int, bool>& dfsVisited){
+
+    visited[node] = true;
+    dfsVisited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i]){
+            bool ans = checkCycleDFS(i, adj, visited, dfsVisited);
+            if(ans) return true;
+        }
+        else if(visited[i] && dfsVisited[i]) return true;
+    }
+    
+    dfsVisited[node] = false;
+    return false;
+}
+
+void topologicalSort(int node, map<int, list<int>>& adj, 
+                       map<int, bool>& visited, stack<int>& topo){
+
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i])
+       topologicalSort(i, adj, visited, topo); 
+    }
+    
+    topo.push(node);
+ 
+}
+
+void displayTopo(stack<int> st){
+    while(!st.empty()){
+        cout<<st.top()<<" ";
+        st.pop();
+    }
+}
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v;
+        cin>>u>>v;
+        g.addEdge(u, v);
+    }
+    
+    g.print();
+    
+    cout<<endl;
+    cout<<"BFS : ";
+    bfs(1, g.adj);
+    
+    map<int, bool> visited;
+    cout<<endl;
+    cout<<"DFS : ";
+    dfs(1, g.adj, visited);
+     
+    bool ans = detectCycleBFS(1, g.adj);
+    
+    if(ans) cout<<"\nCycle exisits .\n";
+    else cout<<"\nCycle doesn't exisits .\n";
+    
+    map<int, bool> vis;
+    bool ans1 = detectCycleDFS(1, -1, g.adj, vis);
+    
+    if(ans1) cout<<"\nCycle exisits using DFS.\n";
+    else cout<<"\nCycle doesn't exisits using DFS.\n";
+    
+    map<int, bool> v;
+    map<int, bool> dv;
+    bool ans2 = checkCycleDFS(1, g.adj, v, dv);
+    
+     if(ans1) cout<<"\nCycle exisits using DFS in directed graph.\n";
+    else cout<<"\nCycle doesn't exisits using DFS in direted graph.\n";
+    
+    stack<int> topo;
+    
+    map<int, bool> vi;
+    topologicalSort(0, g.adj, vi, topo);
+    
+    cout<<"\nTopological sorting using DFS: ";
+    displayTopo(topo);
+    
+    
+    cout<<"\n\nTopological Sorting using BFS(Kahn's Algorithm : ";
+    vector<int> indegree(n);
+    
+    for(auto i : g.adj){
+       for(auto j : i.second){
+           indegree[j]++;
+       } 
+    }
+    
+    //Kahn's Algorithm
+    queue<int> q;
+    for(int i = 0 ; i < n ; i++){
+        if(indegree[i] == 0) q.push(i);
+    }
+    
+    while(!q.empty()){
+        int front = q.front();
+        q.pop();
+        
+        cout<<front<<" ";
+        
+        for(auto i : g.adj[front]){
+           indegree[i]--;
+           
+           if(indegree[i] == 0){
+               q.push(i);
+           }
+        }
+    }
+    
+    return 0;
+}
