@@ -1,0 +1,17 @@
+
+bool checkCycleDFS(int node, map<int, list<int>>& adj, map<int, bool>& visited, map<int, bool>& dfsVisited){
+
+    visited[node] = true;
+    dfsVisited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i]){
+            bool ans = checkCycleDFS(i, adj, visited, dfsVisited);
+            if(ans) return true;
+        }
+        else if(visited[i] && dfsVisited[i]) return true;
+    }
+    
+    dfsVisited[node] = false;
+    return false;
+}
