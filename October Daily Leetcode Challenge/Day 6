@@ -1,0 +1,39 @@
+class TimeMap {
+public:
+    
+    map<pair<string, int>, string > mp;
+    vector<pair<string, int>> prev;
+    
+    TimeMap() {
+
+    }
+    
+    void set(string key, string value, int timestamp) {
+        
+        mp[{key, timestamp}] = value;
+        prev.push_back({key, timestamp});
+    }
+    
+    string get(string key, int timestamp) {
+    
+        string ans = "";
+        if(prev.size() != 0){ 
+          
+        int n = prev.size() - 1;
+        
+            int maxi = INT_MIN, temp = -1;
+            while( n >= 0){
+                if(prev[n].first == key && prev[n].second <= timestamp){
+                    temp = n;
+                    break;
+                }
+                n--;
+            }
+        n = temp;
+            
+        if(n >= 0){ if(mp.find({key, prev[n].second}) != mp.end()) ans = mp[{key, prev[n].second}];}
+      }
+        return ans;
+        
+    }
+};
