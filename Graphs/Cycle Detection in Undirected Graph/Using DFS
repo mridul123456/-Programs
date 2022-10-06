@@ -1,0 +1,15 @@
+bool detectCycleDFS(int node, int parent, map<int, list<int> >& adj, 
+                     map<int, bool>& visited){
+
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i]){
+            bool ans = detectCycleDFS(i, node, adj, visited);
+            if(ans) return true;
+        }
+        else if(visited[i] && i != parent) return true;
+    }
+                         
+    return false;                     
+}
