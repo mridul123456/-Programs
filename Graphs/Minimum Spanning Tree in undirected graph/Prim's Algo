@@ -1,0 +1,109 @@
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    map<int, list<pair<int, int>> >adj;
+    
+    void addEdge(int u, int v, int w){
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+    
+    
+    void print(){
+        
+        for(auto i : adj){
+            cout<<i.first<<" -> ";
+            for(auto j : i.second){
+                cout<<j.first<<", ";
+            }cout<<endl;
+        }
+    }
+    
+};
+
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v, w;
+        cin>>u>>v>>w;
+        g.addEdge(u, v, w);
+    }
+    
+    g.print();
+    
+    //Nodes starting from 0
+    vector<int> parent(n, -1);
+    
+    //Stores the min weight of node i
+    vector<int> key(n, INT_MAX);
+    
+    //Stores true or false depending on whether the node i's min weight 
+    //is already found or not
+    vector<bool> mst(n, false);
+    
+    int src;
+    cout<<"Enter Source node : \n";
+    cin>>src;
+    
+    key[src] = 0;
+    
+    for(int i = 0 ; i < n ; i++){
+        
+        int mini = INT_MAX;
+        int u;
+        
+        //Finding the min val from the key matrcx which is not marked true 
+         // in mst
+        for(int j = 0 ; j < n ; j++){
+            if(key[j] < mini && mst[j] == false){
+                mini = key[j];
+                u = j;
+            }
+        }
+        
+        //Setting the node with min value as true
+        mst[u] = true;
+        
+        //Traversing all adjacent nodes of u
+        for(auto i : g.adj[u]){
+            
+            int v = i.first;
+            int w = i.second;
+            
+            if(mst[v] == false && key[v] > w){
+                key[v] = w;
+                parent[v] = u;
+            }
+        }
+    }
+    
+    int ans = 0;
+    for(int i = 0 ; i < n ; i++){
+        ans += key[i];
+    }
+    
+    cout<<ans<<" ";
+   
+}
+
+
