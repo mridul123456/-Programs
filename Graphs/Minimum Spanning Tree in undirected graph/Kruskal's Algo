@@ -1,0 +1,110 @@
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    vector<vector< int >> adj;
+    
+    void addEdge(int u, int v, int w){
+        vector<int> temp;
+        
+        temp.push_back(u);
+        temp.push_back(v);
+        temp.push_back(w);
+        
+        adj.push_back(temp);
+    }
+    
+    void print(){
+        
+        int n = adj.size();
+        for(int i = 0 ; i < n ; i++){
+            cout<<adj[i][0]<<", "<<adj[i][1]<<", "<<adj[i][2]<<", "<<endl;
+        }
+    }
+    
+};
+
+bool cmp(vector<int>& a, vector<int>& b){
+    return a[2] < b[2];
+}
+
+int findParent(vector<int>& parent, int u){
+    if(parent[u] == u) return u;
+    
+    return parent[u] = findParent(parent, parent[u]);
+}
+
+void unionSet(int node1, int node2, vector<int>& parent, vector<int>& rank){
+    
+    int u = findParent(parent, node1);
+    int v = findParent(parent, node2);
+    
+    if(rank[u] < rank[v]){
+        parent[u] = v;
+    }else if(rank[v] < rank[u]){
+        parent[v] = u;
+    }else{
+        parent[v] = u;
+        rank[u]++;
+    }
+    
+}
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v, w;
+        cin>>u>>v>>w;
+        g.addEdge(u, v, w);
+    }
+    
+    g.print();
+    
+    vector<int> parent(n);
+    vector<int> rank(n, 0);
+    int minWeight = 0;
+    
+    for(int i = 0 ; i < n ; i++) parent[i] = i;
+    
+    sort(g.adj.begin(), g.adj.end(), cmp);
+    
+    cout<<endl;
+    g.print();
+    cout<<endl;
+    
+    for(int i = 0 ; i < g.adj.size() ; i++){
+        int u = findParent(parent, g.adj[i][0]);
+        int v = findParent(parent, g.adj[i][1]);
+        int w = g.adj[i][2];
+        
+        if(u != v){
+            minWeight += w;
+            unionSet(u, v, parent, rank);
+        }
+        
+    }
+    
+    cout<<"Min Weight : "<<minWeight;
+   
+    return 0;
+}
+
+
