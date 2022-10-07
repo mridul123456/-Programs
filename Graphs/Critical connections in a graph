@@ -1,0 +1,69 @@
+class Solution {
+public:
+    void dfs(int node, int parent, int& timer, unordered_map<int, list<int>>& adj, vector<int>& disc, 
+              vector<int>& low, unordered_map<int, bool>& visited, vector<vector<int>>& ans){
+        
+        visited[node] = true;
+        low[node] = timer;
+        disc[node] = timer;
+        timer++;
+        
+        for(auto i : adj[node]){
+            
+            if(i == parent) continue;
+            
+            if(!visited[i]){
+                dfs(i, node, timer, adj, disc, low, visited, ans);
+                
+                //When child forms backedge
+                low[node] = min(low[node], low[i]);
+                
+                //If low[i] means the the lowest possible time of child is greater than 
+                //discovery time of node this means there is one way to reach the child i from 
+                //curr node
+                
+                if(low[i] > disc[node]){
+                    vector<int> temp;
+                    temp.push_back(i);
+                    temp.push_back(node);
+                    ans.push_back(temp);
+                }
+            }
+            else{
+                //Back edge
+                //It means that curr node can be reached from some node other than its parent
+                low[node] = min(low[node], disc[i]);
+            }
+            
+        }
+        
+    }
+    
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> ans;
+        int timer = 0;
+        unordered_map<int, list<int>> adj;
+        
+        for(int i = 0 ; i < connections.size() ; i++){
+            int u = connections[i][0];
+            int v = connections[i][1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        vector<int> low(n, -1);
+        vector<int> disc(n, -1);
+        int parent = -1;
+        
+        unordered_map<int, bool> visited;
+        for(int i = 0 ; i < n ; i++){
+            
+            if(!visited[i]){
+                dfs(i, parent, timer, adj, disc, low, visited, ans);
+            }
+        }
+        
+        return ans;
+    }
+};
