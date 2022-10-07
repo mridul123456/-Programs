@@ -1,0 +1,102 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    map<int, list<pair<int, int>> >adj;
+    
+    void addEdge(int u, int v, int w){
+        adj[u].push_back({v, w});
+    }
+    
+    void print(){
+        
+        for(auto i : adj){
+            cout<<i.first<<" -> ";
+            for(auto j : i.second){
+                cout<<j.first<<", ";
+            }cout<<endl;
+        }
+    }
+    
+};
+
+void topoSort(int node, map<int, list<pair<int, int>>>&adj, 
+               stack<int>& topo, map<int, bool>&visited){
+
+    visited[node] = true;
+    
+    for(auto i : adj[node]){
+        if(!visited[i.first]){
+            topoSort(i.first, adj, topo, visited);
+        }
+    }
+    topo.push(node);               
+}
+
+void shortestPath(int src, map<int, list<pair<int, int>>>& adj,
+                       vector<int>& dist, stack<int>& topo){
+
+    topo.push(src);
+    dist[src] = 0;
+    
+    while(!topo.empty()){
+        int top = topo.top();
+        topo.pop();
+        
+        if(dist[top] != INT_MAX){
+        for(auto i : adj[top]){
+            if(dist[top] + i.second < dist[i.first]){
+                dist[i.first] = dist[top] + i.second ;
+            }
+         }
+      }
+   }
+}
+
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v, w;
+        cin>>u>>v>>w;
+        g.addEdge(u, v, w);
+    }
+    
+    g.print();
+    
+    vector<int> dist(n+1, INT_MAX);
+    stack<int> topo;
+    
+    int node;
+    cout<<"Enter Source Node : ";
+    cin>>node;
+    map<int, bool> vis;
+    topoSort(node, g.adj, topo, vis);
+    
+    shortestPath(node, g.adj, dist, topo);
+    
+    cout<<"Shortest distance to each node from source node is : ";
+    for(int i = 0 ; i <= n ; i++){
+        cout<<dist[i]<<" ";
+    }
+    
+    return 0;
+}
+
+
