@@ -1,0 +1,131 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+  
+  public:
+    
+    map<int, list<int>> adj;
+    
+    void addEdge(int u, int v){
+        
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+        
+    }
+    
+    void print(){
+        
+        for(auto i : adj){
+            cout<<i.first<<" -> ";
+            for(auto j : i.second){
+                cout<<j<<", ";
+            }cout<<endl;
+        }
+    }
+    
+};
+
+void shortestPath(int src, int dest, map<int, list<int>>& adj,
+                       vector<int>&parent){
+
+    queue<int> q;
+    q.push(src);
+    map<int, bool> visited;
+    visited[src] = true;
+    
+    while(!q.empty()){
+        
+        int front  = q.front();
+        q.pop();
+        
+        for(auto i : adj[front]){
+            if(!visited[i]){
+                q.push(i);
+                visited[i] = true;
+                parent[i] = front;
+            }
+        }
+    }        
+}
+
+
+int main(){
+    
+    Graph g;
+    
+    int n;
+    cout<<"Enter the number of vertices/nodes : ";
+    cin>>n;
+    cout<<endl;
+    
+    int edges;
+    cout<<"Enter the number of edges : ";
+    cin>> edges;
+    cout<<endl;
+    
+    cout<<"Enter edges : \n";
+    for(int i = 0 ; i < edges ; i++){
+        int u, v;
+        cin>>u>>v;
+        g.addEdge(u, v);
+    }
+    
+    g.print();
+    
+    int src, dest;
+    cin>>src>>dest;
+    
+    vector<int> parent(n, -1);
+    
+    shortestPath(src, dest, g.adj, parent);
+    
+    vector<int> ans;
+    
+    ans.push_back(dest);
+    int curr = dest;
+    
+    while(curr != src){
+        curr = parent[curr];
+        ans.push_back(curr);
+    }
+    
+    reverse(ans.begin(), ans.end());
+    
+    cout<<"Path Is : ";
+    for(int i = 0 ; i < ans.size() ; i++){
+        cout<<ans[i]<<" ";
+    }
+    
+    return 0;
+}
+
+
+
+Enter the number of vertices/nodes : 8
+Enter the number of edges : 9
+Enter edges : 
+1 2
+1 3
+1 4
+2 5
+5 8
+3 8
+4 6
+6 7
+7 8
+1 2
+7 8
+
+1 -> 2, 3, 4, 
+2 -> 1, 5, 
+3 -> 1, 8, 
+4 -> 1, 6, 
+5 -> 2, 8, 
+6 -> 4, 7, 
+7 -> 6, 8, 
+8 -> 5, 3, 7, 
+
+1 8
+
+Path Is : 1 3 8 
