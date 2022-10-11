@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool isNotPalindrome(string str){
+        int s = 0;
+        int e = str.size() - 1;
+        
+        while( s < e){
+            if(str[s] != str[e]) return true;
+            s++;e--;
+        }
+        return false;
+    }
+    
+    string breakPalindrome(string palindrome) {
+        
+        int n = palindrome.size();
+        if(n == 1)  return "";
+        
+        for(int i = 0 ; i < n ; i++){
+            if(palindrome[i] != 'a'){
+                char temp = palindrome[i];
+                palindrome[i] = 'a';
+                if(isNotPalindrome(palindrome) ) return palindrome;
+                palindrome[i] = temp;
+            }
+        }
+        
+        palindrome[n-1] = 'b';
+        
+        return palindrome;
+    }
+};
